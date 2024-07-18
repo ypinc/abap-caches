@@ -36,23 +36,23 @@
 
 define create_lcl_naive. "&1 table &2 key &3 size
 
-class lcl_naive_&1_by_&2 definition.
-public section.
-  class-methods:
+  class lcl_naive_&1_by_&2 definition.
+    public section.
+    class-methods:
     class_constructor,
     get    importing iv_&2 type &1-&2 returning value(rs_&1) type &1,
     select importing iv_&2 type &1-&2 returning value(rs_&1) type &1.
-  class-data:
-    miss type i,
-    hits type i.
-private section.
-  class-data:
-    heap type hashed table of &1 with unique key &2 initial size &3, " entries
-    anti type hashed table of &1-&2 with unique key table_line, " negative cache
-    msize type i.
-endclass.
+    class-data:
+          miss type i,
+          hits type i.
+    private section.
+    class-data:
+          heap type hashed table of &1 with unique key &2 initial size 128, " entries
+          anti type hashed table of &1-&2 with unique key table_line, " negative cache
+          msize type i.
+  endclass.
 
-class lcl_naive_&1_by_&2 implementation.
+  class lcl_naive_&1_by_&2 implementation.
   method class_constructor.
     msize = &3.
   endmethod.

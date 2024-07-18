@@ -11,8 +11,8 @@
    <TPOOL>
     <item>
      <ID>R</ID>
-     <ENTRY>LRU cache macro</ENTRY>
-     <LENGTH>16</LENGTH>
+     <ENTRY>Naive cache with random eviction</ENTRY>
+     <LENGTH>32</LENGTH>
     </item>
    </TPOOL>
   </asx:values>

@@ -44,32 +44,32 @@
 
 define create_lcl_lru. "&1 table &2 key &3 size
 
-class lcl_lru_&1_by_&2 definition.
-public section.
-  class-methods:
+  class lcl_lru_&1_by_&2 definition.
+    public section.
+    class-methods:
     class_constructor,
     get    importing iv_&2 type &1-&2 returning value(rs_&1) type &1,
     select importing iv_&2 type &1-&2 returning value(rs_&1) type &1.
-  class-data:
-    miss type i,
-    hits type i.
-private section.
-  types:
+    class-data:
+          miss type i,
+          hits type i.
+    private section.
+    types:
     begin of ty_node,
       prev type ref to data, " double-linked list over the hash in order
       next type ref to data, " to have an ability to emulate queue
       data type &1,
     end of ty_node.
-  class-data:
-    heap type hashed table of ty_node with unique key data-&2 initial size &3, " entries
-    anti type hashed table of &1-&2 with unique key table_line, " negative cache
-    mhead type ref   to ty_node, " head of MAIN LRU list
-    mtail type ref   to ty_node, " tail of MAIN LRU list
-    msize type i,                " max size of LRU
-    sr_node type ref to ty_node. " static link to the last accessed node
-endclass.
+    class-data:
+    heap type hashed table of ty_node with unique key data-&2 initial size 128, " entries
+          anti type hashed table of &1-&2 with unique key table_line, " negative cache
+          mhead type ref   to ty_node, " head of MAIN LRU list
+          mtail type ref   to ty_node, " tail of MAIN LRU list
+          msize type i,                " max size of LRU
+          sr_node type ref to ty_node. " static link to the last accessed node
+  endclass.
 
-class lcl_lru_&1_by_&2 implementation.
+  class lcl_lru_&1_by_&2 implementation.
   method class_constructor.
     msize = &3.
   endmethod.

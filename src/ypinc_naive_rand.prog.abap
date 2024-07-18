@@ -36,23 +36,23 @@
 
 define create_lcl_nvrnd. "&1 table &2 key &3 size
 
-class lcl_nvrnd_&1_by_&2 definition.
-public section.
-  class-methods:
+  class lcl_nvrnd_&1_by_&2 definition.
+    public section.
+    class-methods:
     class_constructor,
     get    importing iv_&2 type &1-&2 returning value(rs_&1) type &1,
     select importing iv_&2 type &1-&2 returning value(rs_&1) type &1.
-  class-data:
-    miss type i,
-    hits type i.
-private section.
-  class-data:
-    heap type sorted table of &1 with unique key &2 initial size &3, " entries
-    anti type hashed table of &1-&2 with unique key table_line, " negative cache
-    msize type i.
-endclass.
+    class-data:
+          miss type i,
+          hits type i.
+    private section.
+    class-data:
+          heap type sorted table of &1 with unique key &2 initial size 128, " entries
+          anti type hashed table of &1-&2 with unique key table_line, " negative cache
+          msize type i.
+  endclass.
 
-class lcl_nvrnd_&1_by_&2 implementation.
+  class lcl_nvrnd_&1_by_&2 implementation.
   method class_constructor.
     msize = &3.
   endmethod.
@@ -75,11 +75,11 @@ class lcl_nvrnd_&1_by_&2 implementation.
       endif.
       if lines( heap ) = msize. " 2. HEAP is full, delete
         call function 'QF05_RANDOM_INTEGER'
-          EXPORTING
-            RAN_INT_MAX         = msize
-            RAN_INT_MIN         = 1
-         IMPORTING
-            RAN_INT             = sy-tfill.
+        EXPORTING
+          RAN_INT_MAX         = msize
+          RAN_INT_MIN         = 1
+        IMPORTING
+          RAN_INT             = sy-tfill.
 
         delete heap index sy-tfill.
       endif.
